@@ -105,6 +105,7 @@ void RunFitEmiss(){
  h2dFile_r=(TH2F*)_file0->Get("pimissen_r_DE_E_8");
 
  double random_factor = 0.055; // CHECK WITH DAN
+ h2dFile_pr->Sumw2(1);
  h2dFile_pr->Add(h2dFile_r,-random_factor);
 
  // We have 300 bins in q, but we want a range of 20MeV in q, so we need to have a range of 4 before we do the projection (75 bins between 0 and 1.5, in order to have the same separation as 300 bins from 0 to 6 in q) . If you want to use the full binning, you will need to modify the name of the file, the GetSignal function in order to add all the smaller bins in order to cover the coherent peak, and the factor of 4 at the bottom here.
