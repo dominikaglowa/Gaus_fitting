@@ -26,7 +26,7 @@ TH1F* hclaireA;
 
 void RunFitEmiss(){
  
-  TFile *_file0 = TFile::Open("Physics_CB_888_renamed.root"); // th input file
+  TFile *_file0 = TFile::Open("Physics_CB_888_renamed_tapscut.root"); // th input file
  
   TCanvas *c1 = new TCanvas("c1","c1",800,800);  // setup canvases for plotting
   TCanvas *c2 = new TCanvas("c2","c2",800,800);
@@ -107,6 +107,7 @@ void RunFitEmiss(){
  h2dFile_r=(TH2F*)_file0->Get("pimissen_r_DE_E_8");
 
  double random_factor = 0.055; // CHECK WITH DAN
+ h2dFile_pr->Sumw2(1);
  h2dFile_pr->Add(h2dFile_r,-random_factor);
 
  // We have 300 bins in q, but we want a range of 20MeV in q, so we need to have a range of 4 before we do the projection (75 bins between 0 and 1.5, in order to have the same separation as 300 bins from 0 to 6 in q) . If you want to use the full binning, you will need to modify the name of the file, the GetSignal function in order to add all the smaller bins in order to cover the coherent peak, and the factor of 4 at the bottom here.
@@ -117,7 +118,7 @@ void RunFitEmiss(){
    hEmiss=NULL;
    low=(float)i/50;    // calculate low and high limits for q ranges in histogram
    high=(float)(i+1)/50;  // this is bin size dependent!
-   sprintf(name1,"pimissen_q_8_%4.3f_%4.3f",low,high);
+   sprintf(name1,"pimissen_q_9_%4.3f_%4.3f",low,high);
    //  cout << name1 << endl;
  
    h2dFile_pr->GetYaxis()->SetRange(4*i,4*i+3);
@@ -157,7 +158,7 @@ void RunFitEmiss(){
    hEmiss=NULL;
    low=(float)i/50;    // calculate low and high limits for q rages in histogram
    high=(float)(i+1)/50;  // this is bin size dependent!
-   sprintf(name1,"pimissen_q_8_%4.3f_%4.3f",low,high);
+   sprintf(name1,"pimissen_q_9_%4.3f_%4.3f",low,high);
    cout << name1 << endl;
    QQ=(low+high)/2;  //centre of the q bin e.g bin 0.22_0.23 is 0.225
    // cout<<name1<<endl;
@@ -250,7 +251,7 @@ void RunFitEmiss(){
    hEmiss=NULL;
    low=(float)i/50;
    high=(float)(i+1)/50;
-   sprintf(name1,"pimissen_q_8_%4.3f_%4.3f",low,high);
+   sprintf(name1,"pimissen_q_9_%4.3f_%4.3f",low,high);
    QQ=(low+high)/2;  // q bin centre
    cout<<name1<<endl;
    h2dFile_pr->GetYaxis()->SetRange(4*i,4*i+3);
@@ -299,7 +300,7 @@ void RunFitEmiss(){
     hEmiss=NULL;
    low=(float)i/50;
    high=(float)(i+1)/50;
-   sprintf(name1,"pimissen_q_8_%4.3f_%4.3f",low,high); // change this if change egamma bin
+   sprintf(name1,"pimissen_q_9_%4.3f_%4.3f",low,high); // change this if change egamma bin
    //  cout << name1 << endl;
    QQ=(low+high)/2;
    cout<<name1<<endl;
@@ -368,14 +369,14 @@ void GetSignal(){
 
  //TH1D* his=((TH1D*)gDirectory->Get("DeltaE_Missmom50_BeamE8"));
   //TH1D* his=((TH1D*)gDirectory->Get("pimissen_q_1_0.450_0.455"));
-  TH1D* his=((TH1D*)gDirectory->Get("pimissen_q_8_0.460_0.480"));
+  TH1D* his=((TH1D*)gDirectory->Get("pimissen_q_9_0.460_0.480"));
   his->SetName("hisb");
   his->SetTitle("hisb");
  //  his->SetNameTitle("hisb","hisb");
-   his->Add(((TH1F*)gDirectory->Get("pimissen_q_8_0.480_0.500")));
-   his->Add(((TH1F*)gDirectory->Get("pimissen_q_8_0.500_0.520")));
-   his->Add(((TH1F*)gDirectory->Get("pimissen_q_8_0.440_0.460")));
-   his->Add(((TH1F*)gDirectory->Get("pimissen_q_8_0.520_0.540")));
+   his->Add(((TH1F*)gDirectory->Get("pimissen_q_9_0.480_0.500")));
+   his->Add(((TH1F*)gDirectory->Get("pimissen_q_9_0.500_0.520")));
+   his->Add(((TH1F*)gDirectory->Get("pimissen_q_9_0.440_0.460")));
+   his->Add(((TH1F*)gDirectory->Get("pimissen_q_9_0.520_0.540")));
 //   his->Add(((TH1F*)gDirectory->Get("pimissen_q_1_0.465_0.470"))); 
 //   his->Add(((TH1F*)gDirectory->Get("pimissen_q_1_0.470_0.475")));
 //   his->Add(((TH1F*)gDirectory->Get("pimissen_q_1_0.475_0.480")));

@@ -13,16 +13,16 @@
 
 void divide(){
     
-    TFile*a = new TFile("ratios_test3.root","UPDATE");
+    TFile*a = new TFile("ratio_test22.04.root","UPDATE");
     
     //sn116_Eg8->Clone("ratio_Eg8");
     //sn124_Eg4->Clone("h4b")
     //h4a->Sumw2();
     //h4b->Sumw2();
-    TH1F*ratio=new TH1F("ratioEg8","ratio",300,0,6);
+    TH1F*ratio=new TH1F("ratioEg5","ratio",300,0,6);
     ratio->Sumw2();
     ratio->SetAxisRange(0,5,"Y");
-    ratio->Divide(sn116_Eg8,sn124_Eg8,0.71,1.,"B");
+    ratio->Divide(sn116_Eg5,sn124_Eg5,0.71,1.,"B");
     
     //sn116_Eg9->Clone("ratio_Eg9");
     //ratio_Eg9->Divide(sn116_Eg9,sn124_Eg9,0.71,1.,"B");
