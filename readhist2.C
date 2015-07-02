@@ -20,73 +20,78 @@ using namespace std;
 void readinhist(){
 
    ifstream infile("sn124p_250.out");
+   
+   
+ifstream infile("gampi_sn120_n_fsu30_187.out");
 
-   Double_t t1[1800],t2[1800],t3[1800],t4[1800],t5[1800],t6[1800];
-   char dummy;
+Double_t t1[1800],t2[1800],t3[1800],t4[1800],t5[1800],t6[1800];
+char dummy;
 
-   for(int j = 0; j< 1800; j++){
-      t1[j] = .0;
-      t2[j] = .0;
-      t3[j] = .0;
-      t4[j] = .0;
-      t6[j] = 0.0;
-   }
-
-
-   if(!infile){
-      cout << "Cannot open file!!!" << endl;
-   }
-   else {
-
-      for(int i=0; i< 1800; i++){
-      //while(!infile.eof()){
-	      infile  >> dummy >> t1[i] >> t2[i] >> t3[i] >> t4[i]; 
-	      t5[i] = t1[i] - 0.05;
-      } 
-
-   }
+for(int j = 0; j< 1800; j++){
+  t1[j] = .0;
+  t2[j] = .0;
+  t3[j] = .0;
+  t4[j] = .0;
+  t6[j] = 0.0;
+ }
 
 
-   for(i=0; i<1800; i++) cout << "t1[" << i << "]: " << t1[i] << ", t2[" << i << "]: " << t2[i] <<endl;
+if(!infile){
+  cout << "Cannot open file!!!" << endl;
+ }
+ else {
+
+   for(int i=0; i< 1800; i++){
+     //while(!infile.eof()){
+     infile  >> dummy >> t1[i] >> t2[i] >> t3[i] >> t4[i]; 
+     t5[i] = t1[i] - 0.05;
+   } 
+
+ }
+
+
+for(i=0; i<1800; i++) cout << "t1[" << i << "]: " << t1[i] << ", t2[" << i << "]: " << t2[i] <<endl;
  
   
-  TGraph *gr = new TGraph(1800,t5,t2);
+TGraph *gr1 = new TGraph(1800,t5,t2);
   
-  TRandom2 *fRandom = new TRandom2(0);
+TRandom2 *fRandom = new TRandom2(0);
   
-  Double_t sigma_res = 2.0;
-  Double_t mean_res = 90.05; // just to have everything inside bin center is bin 901
-  TH1F *testH1 = new TH1F("testH1","testH1",1800,0.0,180.0);
-  Int_t n_trials = 100000;
-  Double_t val_random;  
-  //Creating random distribution with the right sigma 
-  for (int i=0 ; i<n_trials; i++) {
-    val_random = fRandom->Gaus(mean_res,sigma_res);
-    testH1->Fill(val_random);
-  }
+Double_t sigma_res = 2.0;
+Double_t mean_res = 90.05; // just to have everything inside bin center is bin 901
+TH1F *testH1 = new TH1F("testH1","testH1",1800,0.0,180.0);
+Int_t n_trials = 100000;
+Double_t val_random;  
+//Creating random distribution with the right sigma 
+for (int i=0 ; i<n_trials; i++) {
+  val_random = fRandom->Gaus(mean_res,sigma_res);
+  testH1->Fill(val_random);
+ }
   
-  Int_t n_counts = int(3*sigma_res/testH1->GetBinWidth()); // I will count from -3sigma to 3sigma
+Int_t n_counts = int(3*sigma_res/testH1->GetBinWidth(1)); // I will count from -3sigma to 3sigma
   
-  for (int i=0; i<1800; i++) {
-    for (int j=-ncounts; j<n_counts ; j++) {
-      if ((i+j)>=0 && (i+j)<1800) {
-        t6[i] = t6[i] + t2[i+j] * double(testH1->GetBinContent(j)) / double(n_trials);
-      }
+for (int i=0; i<1800; i++) {
+  for (int j=-n_counts; j<n_counts ; j++) {
+    if ((i+j)>=0 && (i+j)<1800) {
+      t6[i] = t6[i] + t2[i+j] * double(testH1->GetBinContent(901+j)) / double(n_trials);
     }
   }
+ }
   
- TGraph *gr = new TGraph(1800,t5,t6);
+TGraph *gr2 = new TGraph(1800,t5,t6);
+  
+
   
   
   TFile *fout = NULL;
   if( fout )delete fout;
   fout = new TFile("sn124p_250.root","RECREATE");
-  gr->Write();
+  gr2->Write();
 
   TCanvas *c1 = NULL;
   if( c1 )delete c1;
   c1 = new TCanvas("c1");
-  gr->Draw("");
+  gr2->Draw("");
 }
 
 
